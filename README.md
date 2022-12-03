@@ -1,8 +1,8 @@
-# Timespace
+# TimeSpace
 
 ## Features
 
-This extension simply show UTC time, and your locale time in your status bar.
+Simply show & copy UTC your locale time in your status bar with customized format.
 
 ## Requirements
 
