@@ -1,4 +1,4 @@
-# Timespace README
+# Timespace
 
 This is the README for your extension "timespace". After writing up a brief description, we recommend including the following sections.
 
