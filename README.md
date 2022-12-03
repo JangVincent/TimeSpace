@@ -35,6 +35,12 @@ Initial release of TimeSpace
 
 -   Show UTC, and Locale time YYYY-MM-DD hh:mm:ss
 
+### 0.0.2
+
+Icon Added.
+
+![icon](./icon.png)
+
 ## For more information
 
 Developer : [Phantola](https://github.com/phantola)
