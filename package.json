@@ -3,6 +3,7 @@
     "displayName": "TimeSpace",
     "description": "Show UTC/Locale time",
     "version": "0.0.1",
+    "license": "MIT",
     "engines": {
         "vscode": "^1.73.0"
     },
