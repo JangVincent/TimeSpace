@@ -19,3 +19,7 @@ Format customize, copy feature supported.
 ### [0.1.1]
 
 setting parameter description typo issue fixed
+
+### [0.1.2]
+
+Fix Extension description

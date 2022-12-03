@@ -37,7 +37,7 @@ You can change in `settings.json` like down blow.
 
 ## Release Notes
 
-### `0.0.1`
+### 0.0.1
 
 Initial release of TimeSpace
 
@@ -45,7 +45,7 @@ Initial release of TimeSpace
 
 <br/>
 
-### `0.0.2`
+### 0.0.2
 
 Icon Added.
 
@@ -78,9 +78,13 @@ Especially, copy format support unix epoch timestamp, if you want, set like down
 
 Copy feature is very simple. Just click.
 
-### `0.1.1`
+### 0.1.1
 
 Fix parameter description Typo issue in setting panel in VS code
+
+### 0.1.2
+
+Extension description fixed.
 
 ## Known Issues
 
