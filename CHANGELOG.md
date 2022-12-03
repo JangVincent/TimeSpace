@@ -15,3 +15,7 @@ All notable changes to the `TimeSpace` extension will be documented in this file
 ## [0.1.0]
 
 Format customize, copy feature supported.
+
+### [0.1.1]
+
+setting parameter description typo issue fixed

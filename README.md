@@ -78,9 +78,13 @@ Especially, copy format support unix epoch timestamp, if you want, set like down
 
 Copy feature is very simple. Just click.
 
+### `0.1.1`
+
+Fix parameter description Typo issue in setting panel in VS code
+
 ## Known Issues
 
-Nothing yet.
+[0.1.0] : Parameter description typo issue - Fixed 0.1.1 version.
 
 ## For more information
 

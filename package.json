@@ -1,7 +1,7 @@
 {
     "name": "timespace",
     "displayName": "TimeSpace",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "publisher": "Phantola",
     "description": "Show UTC/Locale time",
     "license": "MIT",
@@ -33,17 +33,17 @@
                 "timeSpace.formatLocale": {
                     "type": "string",
                     "default": "YYYY-MM-DD HH:mm:ss",
-                    "description": "UTC time string format"
+                    "description": "Locale time string format"
                 },
                 "timeSpace.copyFormatUTC": {
                     "type": "string",
                     "default": "YYYY-MM-DD HH:mm:ss",
-                    "description": "UTC time string format"
+                    "description": "UTC time string format for copy"
                 },
                 "timeSpace.copyFormatLocale": {
                     "type": "string",
                     "default": "YYYY-MM-DD HH:mm:ss",
-                    "description": "UTC time string format"
+                    "description": "Locale time string format for copy"
                 }
             }
         }
