@@ -3,7 +3,7 @@
     "displayName": "TimeSpace",
     "version": "0.1.1",
     "publisher": "Phantola",
-    "description": "Show UTC/Locale time",
+    "description": "Simple UTC/Locale time extension with customized format",
     "license": "MIT",
     "icon": "icon.png",
     "repository": {
