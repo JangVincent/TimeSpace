@@ -1,10 +1,11 @@
 {
     "name": "timespace",
     "displayName": "TimeSpace",
-    "description": "Show UTC/Locale time",
     "version": "0.0.1",
-    "license": "MIT",
     "publisher": "Phantola",
+    "description": "Show UTC/Locale time",
+    "license": "MIT",
+    "icon": "icon.png",
     "repository": {
         "type": "git",
         "url": "https://github.com/Phantola/TimeSpace.git"
