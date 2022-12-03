@@ -5,6 +5,10 @@
     "version": "0.0.1",
     "license": "MIT",
     "publisher": "Phantola",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/Phantola/TimeSpace.git"
+    },
     "engines": {
         "vscode": "^1.73.0"
     },
