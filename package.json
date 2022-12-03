@@ -1,7 +1,7 @@
 {
     "name": "timespace",
     "displayName": "TimeSpace",
-    "version": "0.0.2",
+    "version": "0.1.0",
     "publisher": "Phantola",
     "description": "Show UTC/Locale time",
     "license": "MIT",
@@ -20,7 +20,34 @@
         "*"
     ],
     "main": "./out/extension.js",
-    "contributes": {},
+    "contributes": {
+        "configuration": {
+            "title": "TimeSpace",
+            "type": "object",
+            "properties": {
+                "timeSpace.formatUTC": {
+                    "type": "string",
+                    "default": "YYYY-MM-DD HH:mm:ss",
+                    "description": "UTC time string format"
+                },
+                "timeSpace.formatLocale": {
+                    "type": "string",
+                    "default": "YYYY-MM-DD HH:mm:ss",
+                    "description": "UTC time string format"
+                },
+                "timeSpace.copyFormatUTC": {
+                    "type": "string",
+                    "default": "YYYY-MM-DD HH:mm:ss",
+                    "description": "UTC time string format"
+                },
+                "timeSpace.copyFormatLocale": {
+                    "type": "string",
+                    "default": "YYYY-MM-DD HH:mm:ss",
+                    "description": "UTC time string format"
+                }
+            }
+        }
+    },
     "scripts": {
         "vscode:prepublish": "yarn run compile",
         "compile": "tsc -p ./",
