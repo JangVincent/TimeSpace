@@ -12,7 +12,16 @@ This extension has dependencies down below;
 
 ## Extension Settings
 
-Just Install.
+Installation is easy. _Just Install_.
+
+-   Find `TimeSpace` in market place
+-   Just install
+
+then, You will see a information message Like,
+![figure1](./readme_assets/after-install.png)
+
+Also you can see time block in your down status bar.
+![figure2](./readme_assets/timespace-activated.png)
 
 ## Known Issues
 
