@@ -113,6 +113,7 @@ export class TodoListProvider implements vscode.TreeDataProvider<TodoItem> {
 
     refresh(): void {
         this._onDidChangeTreeData.fire();
+        this.saveTodoLocal();
     }
 
     async add() {
@@ -201,6 +202,5 @@ export class TodoListProvider implements vscode.TreeDataProvider<TodoItem> {
                 console.log(err);
             }
         });
-        this.refresh();
     }
 }

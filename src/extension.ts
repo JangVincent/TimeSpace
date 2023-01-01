@@ -176,5 +176,5 @@ function alarmTodo(todoListProvider: TodoListProvider) {
         todo.setIsAlarmed();
     });
 
-    todoListProvider.saveTodoLocal();
+    todoListProvider.refresh();
 }

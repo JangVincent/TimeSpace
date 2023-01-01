@@ -31,3 +31,7 @@ All notable changes to the `TimeSpace` extension will be documented in this file
 ### [0.2.1]
 
 -   Save Todo item in local
+
+### [0.2.2]
+
+-   Code Refactoring
