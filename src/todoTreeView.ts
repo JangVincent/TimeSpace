@@ -93,7 +93,13 @@ export class TodoListProvider implements vscode.TreeDataProvider<TodoItem> {
     }
 
     async remove() {
+        if (Object.keys(this.todos).length === 0) {
+            vscode.window.showInformationMessage("No Todo to remove");
+            return;
+        }
+
         const label = await vscode.window.showInputBox({
+            placeHolder: "Todo item title",
             validateInput(value) {
                 if (!value || value.length === 0) {
                     return "Please enter a label";

@@ -1,7 +1,7 @@
 {
     "name": "timespace",
     "displayName": "TimeSpace",
-    "version": "0.1.2",
+    "version": "0.2.0",
     "publisher": "Phantola",
     "description": "Simple UTC/Locale time extension with customized format",
     "license": "MIT",
@@ -67,17 +67,8 @@
                 }
             }
         },
-        "viewsContainers": {
-            "activitybar": [
-                {
-                    "id": "timespace-todo-container",
-                    "title": "TimeSpace Todo",
-                    "icon": "icon.png"
-                }
-            ]
-        },
         "views": {
-            "timespace-todo-container": [
+            "explorer": [
                 {
                     "id": "timespace-todo",
                     "name": "TimeSpace Todo"
