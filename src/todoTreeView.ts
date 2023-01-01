@@ -1,28 +1,40 @@
 // import { TodoImportance, TodoItem } from "./types";
+import dayjs = require("dayjs");
 import * as vscode from "vscode";
-import { TodoImportance } from "./types";
+import { TodoImportance, TodoImportanceList } from "./types";
 
-class TodoItem extends vscode.TreeItem {
+const defaultTimeFormat = "YYYY-MM-DD HH:mm:ss";
+const customAlarmDateInputFormat = vscode.workspace
+    .getConfiguration()
+    .get("timeSpace.alarmDateInputFormat", defaultTimeFormat);
+export class TodoItem extends vscode.TreeItem {
     constructor(
         public readonly label: string,
-        public readonly importance: TodoImportance,
+        public readonly importance: string,
         public readonly alarmDate: number,
         public readonly tooltip?: string
     ) {
         super(label);
+        console.log(this.alarmDate);
         if (!tooltip) {
-            this.tooltip = `
-            Importance : ${this.importance}\n
-            Alarm Date : ${this.alarmDate}`;
+            this.tooltip = this.makeTooltip();
         }
     }
 
+    isAlarmed: boolean = false;
+
     getTooltip(): string {
-        return this.tooltip
-            ? this.tooltip
-            : `
-            Importance : ${this.importance}\n
-            Alarm Date : ${this.alarmDate}`;
+        return this.tooltip ? this.tooltip : this.makeTooltip();
+    }
+
+    makeTooltip(): string {
+        return `Importance : ${this.importance}\nAlarm Date : ${dayjs(
+            this.alarmDate
+        ).format(customAlarmDateInputFormat)}`;
+    }
+
+    setIsAlarmed() {
+        this.isAlarmed = true;
     }
 }
 
@@ -31,9 +43,13 @@ export class TodoListProvider implements vscode.TreeDataProvider<TodoItem> {
         vscode.commands.registerCommand("timespace.todo.refresh", () =>
             this.refresh()
         );
-        vscode.commands.registerCommand("timespace.todo.add", () => this.add());
-        vscode.commands.registerCommand("timespace.todo.remove", () =>
-            this.remove()
+        vscode.commands.registerCommand(
+            "timespace.todo.add",
+            async () => await this.add()
+        );
+        vscode.commands.registerCommand(
+            "timespace.todo.remove",
+            async () => await this.remove()
         );
     }
 
@@ -50,9 +66,51 @@ export class TodoListProvider implements vscode.TreeDataProvider<TodoItem> {
         this._onDidChangeTreeData.fire();
     }
 
-    add() {}
+    async add() {
+        let label: string =
+            (await vscode.window.showInputBox({
+                placeHolder: "My Todo",
+            })) || `TODO ${Object.keys(this.todos).length + 1}`;
 
-    remove() {}
+        let importance: string =
+            (await vscode.window.showQuickPick(TodoImportanceList)) || "Low";
+
+        let alarmDate: string =
+            (await vscode.window.showInputBox({
+                placeHolder: ``,
+            })) || dayjs().valueOf().toString();
+
+        const alarmDateNumber = dayjs(
+            alarmDate,
+            customAlarmDateInputFormat
+        ).valueOf();
+
+        this.todos[label] = new TodoItem(label, importance, alarmDateNumber);
+
+        this.refresh();
+    }
+
+    async remove() {
+        const label = await vscode.window.showInputBox({
+            validateInput(value) {
+                if (!value || value.length === 0) {
+                    return "Please enter a label";
+                }
+
+                return null;
+            },
+        });
+
+        if (label) {
+            delete this.todos[label];
+            this.refresh();
+            vscode.window.showInformationMessage(`Removed Todo : ${label}`);
+        }
+    }
+
+    getTodos() {
+        return this.todos;
+    }
 
     getTreeItem(element: TodoItem): vscode.TreeItem {
         return element;

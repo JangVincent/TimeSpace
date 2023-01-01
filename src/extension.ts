@@ -2,7 +2,7 @@
 // Import the module and reference it with the alias vscode in your code below
 import dayjs = require("dayjs");
 import * as vscode from "vscode";
-import { TodoListProvider } from "./todoTreeView";
+import { TodoItem, TodoListProvider } from "./todoTreeView";
 import { ConfigurationMap } from "./types";
 
 let utcTimeItem: vscode.StatusBarItem;
@@ -20,11 +20,10 @@ export function activate(context: vscode.ExtensionContext) {
     const subscriptions = context.subscriptions;
     configurationMap = getConfigurationMap();
 
-    const todoView = vscode.window.createTreeView("timespace-todo", {
-        treeDataProvider: new TodoListProvider(),
+    const todoListProvider = new TodoListProvider();
+    vscode.window.createTreeView("timespace-todo", {
+        treeDataProvider: todoListProvider,
     });
-
-    vscode.window.showInformationMessage(`TimeSpace is now activated!`);
 
     utcTimeItem = vscode.window.createStatusBarItem(
         vscode.StatusBarAlignment.Left,
@@ -73,11 +72,16 @@ export function activate(context: vscode.ExtensionContext) {
 
     // update status bar item per second
     setInterval(() => {
-        updateStatusBarItem(configurationMap);
+        updateStatusBarItem(configurationMap, todoListProvider);
     }, 1000);
+
+    vscode.window.showInformationMessage(`TimeSpace is now activated!`);
 }
 
-function updateStatusBarItem(configurationMap: ConfigurationMap): void {
+function updateStatusBarItem(
+    configurationMap: ConfigurationMap,
+    todoListProvider: TodoListProvider
+): void {
     const userTimeZoneOffsetHour = new Date().getTimezoneOffset() / 60;
 
     utcTimeItem.text = `$(clock) U ${dayjs()
@@ -87,8 +91,25 @@ function updateStatusBarItem(configurationMap: ConfigurationMap): void {
         configurationMap.formatLocale
     )}`;
 
+    // show status bar time
     utcTimeItem.show();
     localeTimeItem.show();
+
+    // todo alarm
+    let todos = Object.values(todoListProvider.getTodos());
+    todos = todos.filter((todo: TodoItem) => {
+        return !todo.isAlarmed && dayjs().isSame(todo.alarmDate, "minute");
+    });
+
+    if (todos.length <= 0) return;
+
+    vscode.window.showInformationMessage(`TimeSpace Todo Alarm`, {
+        modal: true,
+        detail: todos.map((todo: TodoItem) => todo.label).join("\n"),
+    });
+    todos.forEach((todo: TodoItem) => {
+        todo.setIsAlarmed();
+    });
 }
 
 function getConfigurationMap() {

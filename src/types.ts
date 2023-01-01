@@ -5,6 +5,7 @@ export interface ConfigurationMap {
     copyFormatLocale: string;
 }
 
+export const TodoImportanceList = ["Low", "Medium", "High"];
 export enum TodoImportance {
     Low = 0,
     Medium = 1,

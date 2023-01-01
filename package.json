@@ -44,6 +44,11 @@
                     "type": "string",
                     "default": "YYYY-MM-DD HH:mm:ss",
                     "description": "Locale time string format for copy"
+                },
+                "timeSpace.alarmDateInputFormat": {
+                    "type": "string",
+                    "default": "YYYY-MM-DD HH:mm:ss",
+                    "description": "Alarm date Input format"
                 }
             }
         },
