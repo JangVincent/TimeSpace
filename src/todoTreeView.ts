@@ -1,12 +1,16 @@
 // import { TodoImportance, TodoItem } from "./types";
 import dayjs = require("dayjs");
 import * as vscode from "vscode";
-import { TodoImportance, TodoImportanceList } from "./types";
+import { TodoImportanceList } from "./types";
 
 const defaultTimeFormat = "YYYY-MM-DD HH:mm:ss";
 const customAlarmDateInputFormat = vscode.workspace
     .getConfiguration()
     .get("timeSpace.alarmDateInputFormat", defaultTimeFormat);
+
+const alarmDateDisplayFormat = vscode.workspace
+    .getConfiguration()
+    .get("timeSpace.alarmDateDisplayFormat", defaultTimeFormat);
 export class TodoItem extends vscode.TreeItem {
     constructor(
         public readonly label: string,
@@ -15,10 +19,8 @@ export class TodoItem extends vscode.TreeItem {
         public readonly tooltip?: string
     ) {
         super(label);
-        console.log(this.alarmDate);
-        if (!tooltip) {
-            this.tooltip = this.makeTooltip();
-        }
+        if (tooltip) return;
+        this.tooltip = this.makeTooltip();
     }
 
     isAlarmed: boolean = false;
@@ -30,7 +32,7 @@ export class TodoItem extends vscode.TreeItem {
     makeTooltip(): string {
         return `Importance : ${this.importance}\nAlarm Date : ${dayjs(
             this.alarmDate
-        ).format(customAlarmDateInputFormat)}`;
+        ).format(alarmDateDisplayFormat)}`;
     }
 
     setIsAlarmed() {
@@ -77,7 +79,7 @@ export class TodoListProvider implements vscode.TreeDataProvider<TodoItem> {
 
         let alarmDate: string =
             (await vscode.window.showInputBox({
-                placeHolder: ``,
+                value: dayjs().format(customAlarmDateInputFormat),
             })) || dayjs().valueOf().toString();
 
         const alarmDateNumber = dayjs(

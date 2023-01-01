@@ -1,13 +1,10 @@
 export interface ConfigurationMap {
+    enableWelcomeMessage: boolean;
     formatUTC: string;
     formatLocale: string;
     copyFormatUTC: string;
     copyFormatLocale: string;
+    enableAlarm: boolean;
 }
 
 export const TodoImportanceList = ["Low", "Medium", "High"];
-export enum TodoImportance {
-    Low = 0,
-    Medium = 1,
-    High = 2,
-}

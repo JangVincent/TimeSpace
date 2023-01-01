@@ -25,6 +25,11 @@
             "title": "TimeSpace",
             "type": "object",
             "properties": {
+                "timeSpace.enableWelcomeMessage": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Enable welcome message"
+                },
                 "timeSpace.formatUTC": {
                     "type": "string",
                     "default": "YYYY-MM-DD HH:mm:ss",
@@ -48,7 +53,17 @@
                 "timeSpace.alarmDateInputFormat": {
                     "type": "string",
                     "default": "YYYY-MM-DD HH:mm:ss",
-                    "description": "Alarm date Input format"
+                    "description": "Alarm date input format"
+                },
+                "timeSpace.alarmDateDisplayFormat": {
+                    "type": "string",
+                    "default": "YYYY-MM-DD HH:mm:ss",
+                    "description": "Alarm date display format"
+                },
+                "timeSpace.enableAlarm": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Enable alarm"
                 }
             }
         },

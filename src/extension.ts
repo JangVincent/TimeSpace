@@ -8,7 +8,6 @@ import { ConfigurationMap } from "./types";
 let utcTimeItem: vscode.StatusBarItem;
 let localeTimeItem: vscode.StatusBarItem;
 let configurationMap: ConfigurationMap;
-let welcomeMessageShown: boolean = false;
 
 // This method is called when your extension is deactivated
 export function deactivate() {
@@ -19,6 +18,14 @@ export function deactivate() {
 export function activate(context: vscode.ExtensionContext) {
     configurationMap = getConfigurationMap();
 
+    // Update configuration map when settings.json updated
+    vscode.workspace.onDidChangeConfiguration((event) => {
+        if (event.affectsConfiguration("timeSpace")) {
+            configurationMap = getConfigurationMap();
+        }
+    });
+
+    // add and show todo list view
     const todoListProvider = new TodoListProvider();
     vscode.window.createTreeView("timespace-todo", {
         treeDataProvider: todoListProvider,
@@ -32,8 +39,6 @@ export function activate(context: vscode.ExtensionContext) {
         vscode.StatusBarAlignment.Left,
         20
     );
-
-    //vscode.window.showInformationMessage(`TimeSpace is now activated!`);
 
     // command for click event register
     const utcTimeCopyCommand = "timeSpace.copyUTC";
@@ -57,26 +62,48 @@ export function activate(context: vscode.ExtensionContext) {
     utcTimeItem.command = utcTimeCopyCommand;
     localeTimeItem.command = localeTimeCopyCommand;
 
-    // Update configuration map when settings.json updated
-    vscode.workspace.onDidChangeConfiguration((event) => {
-        if (event.affectsConfiguration("timeSpace")) {
-            configurationMap = getConfigurationMap();
-        }
-    });
-
     // update status bar item per second
     setInterval(() => {
         updateStatusBarItem(configurationMap);
-        showWelcomeMessage();
-        todoAlarm(todoListProvider);
+
+        if (!configurationMap.enableAlarm) return;
+        alarmTodo(todoListProvider);
     }, 1000);
+
+    // show welcome message by configuration
+    if (configurationMap.enableWelcomeMessage) {
+        setTimeout(() => {
+            showWelcomeMessage();
+        }, 1000);
+    }
 }
 
 function showWelcomeMessage() {
-    if (!welcomeMessageShown) {
-        vscode.window.showInformationMessage(`TimeSpace is now activated!`);
-        welcomeMessageShown = true;
-    }
+    vscode.window.showInformationMessage(`TimeSpace is now activated!`);
+}
+
+function getConfigurationMap() {
+    const defaultTimeFormat = "YYYY-MM-DD HH:mm:ss";
+    return {
+        enableWelcomeMessage: vscode.workspace
+            .getConfiguration()
+            .get("timeSpace.enableWelcomeMessage", true),
+        formatUTC: vscode.workspace
+            .getConfiguration()
+            .get("timeSpace.formatUTC", defaultTimeFormat),
+        formatLocale: vscode.workspace
+            .getConfiguration()
+            .get("timeSpace.formatLocale", defaultTimeFormat),
+        copyFormatUTC: vscode.workspace
+            .getConfiguration()
+            .get("timeSpace.copyFormatUTC", defaultTimeFormat),
+        copyFormatLocale: vscode.workspace
+            .getConfiguration()
+            .get("timeSpace.copyFormatLocale", defaultTimeFormat),
+        enableAlarm: vscode.workspace
+            .getConfiguration()
+            .get("timeSpace.enableAlarm", true),
+    };
 }
 
 function updateStatusBarItem(configurationMap: ConfigurationMap): void {
@@ -92,26 +119,6 @@ function updateStatusBarItem(configurationMap: ConfigurationMap): void {
     // show status bar time
     utcTimeItem.show();
     localeTimeItem.show();
-}
-
-function getConfigurationMap() {
-    const defaultTimeFormat = "YYYY-MM-DD HH:mm:ss";
-    const formatMap = {
-        formatUTC: vscode.workspace
-            .getConfiguration()
-            .get("timeSpace.formatUTC", defaultTimeFormat),
-        formatLocale: vscode.workspace
-            .getConfiguration()
-            .get("timeSpace.formatLocale", defaultTimeFormat),
-        copyFormatUTC: vscode.workspace
-            .getConfiguration()
-            .get("timeSpace.copyFormatUTC", defaultTimeFormat),
-        copyFormatLocale: vscode.workspace
-            .getConfiguration()
-            .get("timeSpace.copyFormatLocale", defaultTimeFormat),
-    };
-
-    return formatMap;
 }
 
 function getCopyString(mode: "utc" | "locale", format: string): string {
@@ -150,7 +157,7 @@ function getCopyString(mode: "utc" | "locale", format: string): string {
     }
 }
 
-function todoAlarm(todoListProvider: TodoListProvider) {
+function alarmTodo(todoListProvider: TodoListProvider) {
     let todos = Object.values(todoListProvider.getTodos());
 
     if (todos.length <= 0) return;
