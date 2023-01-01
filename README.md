@@ -115,6 +115,13 @@ In yor explorer, You can see `TIMESPACE TODO` list.
 `-` button for remove todo item  
 last button for refresh todo item
 
+Todo item save in
+
+-   macOS `$HOME/Library/Application\ Support/Code/User/timeSpaceTodo.json`
+-   Linux `$HOME/.config/Code/User/timeSpaceTodo.json`
+
+Windows will be supported as soon.
+
 ### Add Todo
 
 Let's add todo.
@@ -191,6 +198,7 @@ You can turn on/off in `settings.json`
 
 [0.1.0] : Parameter description typo issue - Fixed 0.1.1 version.
 [0.1.2] : Locale time copy format not applied
+[0.2.0] : Todo Items not saved. - Fixed 0.2.1 version.
 
 ## For more information
 

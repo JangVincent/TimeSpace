@@ -2,6 +2,8 @@
 import dayjs = require("dayjs");
 import * as vscode from "vscode";
 import { TodoImportanceList } from "./types";
+import fs = require("fs");
+import os = require("os");
 
 const defaultTimeFormat = "YYYY-MM-DD HH:mm:ss";
 const customAlarmDateInputFormat = vscode.workspace
@@ -11,6 +13,7 @@ const customAlarmDateInputFormat = vscode.workspace
 const alarmDateDisplayFormat = vscode.workspace
     .getConfiguration()
     .get("timeSpace.alarmDateDisplayFormat", defaultTimeFormat);
+
 export class TodoItem extends vscode.TreeItem {
     constructor(
         public readonly label: string,
@@ -53,8 +56,52 @@ export class TodoListProvider implements vscode.TreeDataProvider<TodoItem> {
             "timespace.todo.remove",
             async () => await this.remove()
         );
+
+        switch (process.platform) {
+            case "win32": {
+                break;
+            }
+
+            case "darwin": {
+                this.filePath = `${process.env.HOME}/Library/Application\ Support/Code/User/timeSpaceTodo.json`;
+
+                break;
+            }
+
+            case "linux": {
+                this.filePath = `${process.env.HOME}/.config/Code/User/timeSpaceTodo.json`;
+
+                break;
+            }
+        }
+
+        if (fs.existsSync(this.filePath)) {
+            // Read the file if it exists
+            fs.readFile(this.filePath, "utf8", (err, data) => {
+                if (err) {
+                    console.log(err);
+                }
+                const openedTodo = JSON.parse(data);
+                for (const key in openedTodo) {
+                    this.todos[key] = new TodoItem(
+                        openedTodo[key].label,
+                        openedTodo[key].importance,
+                        openedTodo[key].alarmDate
+                    );
+                }
+            });
+        } else {
+            // Create the file if it does not exist
+            fs.writeFile(this.filePath, JSON.stringify(this.todos), (err) => {
+                if (err) {
+                    console.log(err);
+                }
+                console.log("File created successfully.");
+            });
+        }
     }
 
+    private filePath: string = "";
     private todos: { [k: string]: TodoItem } = {};
 
     private _onDidChangeTreeData: vscode.EventEmitter<
@@ -89,6 +136,12 @@ export class TodoListProvider implements vscode.TreeDataProvider<TodoItem> {
 
         this.todos[label] = new TodoItem(label, importance, alarmDateNumber);
 
+        fs.writeFile(this.filePath, JSON.stringify(this.todos), (err) => {
+            if (err) {
+                console.log(err);
+            }
+        });
+
         this.refresh();
     }
 
@@ -110,7 +163,21 @@ export class TodoListProvider implements vscode.TreeDataProvider<TodoItem> {
         });
 
         if (label) {
+            if (!this.todos[label]) {
+                vscode.window.showInformationMessage(
+                    `No Todo with title : ${label}`
+                );
+                return;
+            }
+
             delete this.todos[label];
+
+            fs.writeFile(this.filePath, JSON.stringify(this.todos), (err) => {
+                if (err) {
+                    console.log(err);
+                }
+            });
+
             this.refresh();
             vscode.window.showInformationMessage(`Removed Todo : ${label}`);
         }
@@ -126,5 +193,14 @@ export class TodoListProvider implements vscode.TreeDataProvider<TodoItem> {
 
     getChildren(element?: TodoItem): TodoItem[] {
         return Object.values(this.todos);
+    }
+
+    saveTodoLocal() {
+        fs.writeFile(this.filePath, JSON.stringify(this.todos), (err) => {
+            if (err) {
+                console.log(err);
+            }
+        });
+        this.refresh();
     }
 }

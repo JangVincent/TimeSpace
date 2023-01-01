@@ -175,4 +175,6 @@ function alarmTodo(todoListProvider: TodoListProvider) {
     todos.forEach((todo: TodoItem) => {
         todo.setIsAlarmed();
     });
+
+    todoListProvider.saveTodoLocal();
 }

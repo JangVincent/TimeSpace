@@ -1,7 +1,7 @@
 {
     "name": "timespace",
     "displayName": "TimeSpace",
-    "version": "0.2.0",
+    "version": "0.2.1",
     "publisher": "Phantola",
     "description": "Simple UTC/Locale time extension with customized format",
     "license": "MIT",

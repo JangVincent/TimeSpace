@@ -27,3 +27,7 @@ All notable changes to the `TimeSpace` extension will be documented in this file
 ### [0.2.0]
 
 -   Add Todo and Alarm Feature.
+
+### [0.2.1]
+
+-   Save Todo item in local
