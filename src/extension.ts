@@ -8,7 +8,7 @@ import { ConfigurationMap } from "./types";
 let utcTimeItem: vscode.StatusBarItem;
 let localeTimeItem: vscode.StatusBarItem;
 let configurationMap: ConfigurationMap;
-// const todos: { [k: string]: TodoItem } = {};
+let welcomeMessageShown: boolean = false;
 
 // This method is called when your extension is deactivated
 export function deactivate() {
@@ -17,7 +17,6 @@ export function deactivate() {
 
 // This method is called when your extension is activated
 export function activate(context: vscode.ExtensionContext) {
-    const subscriptions = context.subscriptions;
     configurationMap = getConfigurationMap();
 
     const todoListProvider = new TodoListProvider();
@@ -34,36 +33,31 @@ export function activate(context: vscode.ExtensionContext) {
         20
     );
 
+    //vscode.window.showInformationMessage(`TimeSpace is now activated!`);
+
     // command for click event register
     const utcTimeCopyCommand = "timeSpace.copyUTC";
     const localeTimeCopyCommand = "timeSpace.copyLocale";
 
     // event handlers
-    subscriptions.push(
-        vscode.commands.registerCommand(utcTimeCopyCommand, () => {
-            vscode.env.clipboard.writeText(
-                getCopyString("utc", configurationMap.copyFormatUTC)
-            );
-            vscode.window.showInformationMessage(`UTC time copied!`);
-        })
-    );
+    vscode.commands.registerCommand(utcTimeCopyCommand, () => {
+        vscode.env.clipboard.writeText(
+            getCopyString("utc", configurationMap.copyFormatUTC)
+        );
+        vscode.window.showInformationMessage(`UTC time copied!`);
+    });
 
-    subscriptions.push(
-        vscode.commands.registerCommand(localeTimeCopyCommand, () => {
-            vscode.env.clipboard.writeText(
-                getCopyString("locale", configurationMap.copyFormatLocale)
-            );
-            vscode.window.showInformationMessage(`Locale time copied!`);
-        })
-    );
+    vscode.commands.registerCommand(localeTimeCopyCommand, () => {
+        vscode.env.clipboard.writeText(
+            getCopyString("locale", configurationMap.copyFormatLocale)
+        );
+        vscode.window.showInformationMessage(`Locale time copied!`);
+    });
 
     utcTimeItem.command = utcTimeCopyCommand;
     localeTimeItem.command = localeTimeCopyCommand;
 
-    subscriptions.push(utcTimeItem);
-    subscriptions.push(localeTimeItem);
-
-    // when update settings.json
+    // Update configuration map when settings.json updated
     vscode.workspace.onDidChangeConfiguration((event) => {
         if (event.affectsConfiguration("timeSpace")) {
             configurationMap = getConfigurationMap();
@@ -72,16 +66,20 @@ export function activate(context: vscode.ExtensionContext) {
 
     // update status bar item per second
     setInterval(() => {
-        updateStatusBarItem(configurationMap, todoListProvider);
+        updateStatusBarItem(configurationMap);
+        showWelcomeMessage();
+        todoAlarm(todoListProvider);
     }, 1000);
-
-    vscode.window.showInformationMessage(`TimeSpace is now activated!`);
 }
 
-function updateStatusBarItem(
-    configurationMap: ConfigurationMap,
-    todoListProvider: TodoListProvider
-): void {
+function showWelcomeMessage() {
+    if (!welcomeMessageShown) {
+        vscode.window.showInformationMessage(`TimeSpace is now activated!`);
+        welcomeMessageShown = true;
+    }
+}
+
+function updateStatusBarItem(configurationMap: ConfigurationMap): void {
     const userTimeZoneOffsetHour = new Date().getTimezoneOffset() / 60;
 
     utcTimeItem.text = `$(clock) U ${dayjs()
@@ -94,22 +92,6 @@ function updateStatusBarItem(
     // show status bar time
     utcTimeItem.show();
     localeTimeItem.show();
-
-    // todo alarm
-    let todos = Object.values(todoListProvider.getTodos());
-    todos = todos.filter((todo: TodoItem) => {
-        return !todo.isAlarmed && dayjs().isSame(todo.alarmDate, "minute");
-    });
-
-    if (todos.length <= 0) return;
-
-    vscode.window.showInformationMessage(`TimeSpace Todo Alarm`, {
-        modal: true,
-        detail: todos.map((todo: TodoItem) => todo.label).join("\n"),
-    });
-    todos.forEach((todo: TodoItem) => {
-        todo.setIsAlarmed();
-    });
 }
 
 function getConfigurationMap() {
@@ -154,16 +136,36 @@ function getCopyString(mode: "utc" | "locale", format: string): string {
                     .subtract(-userTimeZoneOffsetHour, "hours")
                     .format(format);
         }
-    } else {
-        switch (format) {
-            case "unix-ms":
-                return dayjs().valueOf().toString();
-
-            case "unix-s":
-                return dayjs().unix().toString();
-
-            default:
-                return dayjs().format(configurationMap.copyFormatUTC);
-        }
     }
+
+    switch (format) {
+        case "unix-ms":
+            return dayjs().valueOf().toString();
+
+        case "unix-s":
+            return dayjs().unix().toString();
+
+        default:
+            return dayjs().format(format);
+    }
+}
+
+function todoAlarm(todoListProvider: TodoListProvider) {
+    let todos = Object.values(todoListProvider.getTodos());
+
+    if (todos.length <= 0) return;
+
+    todos = todos.filter((todo: TodoItem) => {
+        return !todo.isAlarmed && dayjs().isSame(todo.alarmDate, "minute");
+    });
+
+    if (todos.length <= 0) return;
+
+    vscode.window.showInformationMessage(`TimeSpace Todo Alarm`, {
+        modal: true,
+        detail: todos.map((todo: TodoItem) => todo.label).join("\n"),
+    });
+    todos.forEach((todo: TodoItem) => {
+        todo.setIsAlarmed();
+    });
 }
