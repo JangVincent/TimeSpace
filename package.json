@@ -1,7 +1,7 @@
 {
     "name": "timespace",
     "displayName": "TimeSpace",
-    "version": "0.1.2",
+    "version": "0.2.0",
     "publisher": "Phantola",
     "description": "Simple UTC/Locale time extension with customized format",
     "license": "MIT",
@@ -25,6 +25,11 @@
             "title": "TimeSpace",
             "type": "object",
             "properties": {
+                "timeSpace.enableWelcomeMessage": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Enable welcome message"
+                },
                 "timeSpace.formatUTC": {
                     "type": "string",
                     "default": "YYYY-MM-DD HH:mm:ss",
@@ -44,8 +49,67 @@
                     "type": "string",
                     "default": "YYYY-MM-DD HH:mm:ss",
                     "description": "Locale time string format for copy"
+                },
+                "timeSpace.alarmDateInputFormat": {
+                    "type": "string",
+                    "default": "YYYY-MM-DD HH:mm:ss",
+                    "description": "Alarm date input format"
+                },
+                "timeSpace.alarmDateDisplayFormat": {
+                    "type": "string",
+                    "default": "YYYY-MM-DD HH:mm:ss",
+                    "description": "Alarm date display format"
+                },
+                "timeSpace.enableAlarm": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Enable alarm"
                 }
             }
+        },
+        "views": {
+            "explorer": [
+                {
+                    "id": "timespace-todo",
+                    "name": "TimeSpace Todo"
+                }
+            ]
+        },
+        "commands": [
+            {
+                "command": "timespace.todo.add",
+                "title": "Add Todo",
+                "icon": "$(add)"
+            },
+            {
+                "command": "timespace.todo.remove",
+                "title": "Remove Todo",
+                "icon": "$(remove)"
+            },
+            {
+                "command": "timespace.todo.refresh",
+                "title": "Refresh Todo",
+                "icon": "$(refresh)"
+            }
+        ],
+        "menus": {
+            "view/title": [
+                {
+                    "command": "timespace.todo.add",
+                    "when": "view == timespace-todo",
+                    "group": "navigation@1"
+                },
+                {
+                    "command": "timespace.todo.remove",
+                    "when": "view == timespace-todo",
+                    "group": "navigation@2"
+                },
+                {
+                    "command": "timespace.todo.refresh",
+                    "when": "view == timespace-todo",
+                    "group": "navigation@3"
+                }
+            ]
         }
     },
     "scripts": {
