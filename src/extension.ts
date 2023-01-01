@@ -2,15 +2,27 @@
 // Import the module and reference it with the alias vscode in your code below
 import dayjs = require("dayjs");
 import * as vscode from "vscode";
+import { TodoListProvider } from "./todoTreeView";
 import { ConfigurationMap } from "./types";
 
 let utcTimeItem: vscode.StatusBarItem;
 let localeTimeItem: vscode.StatusBarItem;
 let configurationMap: ConfigurationMap;
+// const todos: { [k: string]: TodoItem } = {};
 
+// This method is called when your extension is deactivated
+export function deactivate() {
+    vscode.window.showInformationMessage(`TimeSpace is now deactivated.`);
+}
+
+// This method is called when your extension is activated
 export function activate(context: vscode.ExtensionContext) {
     const subscriptions = context.subscriptions;
     configurationMap = getConfigurationMap();
+
+    const todoView = vscode.window.createTreeView("timespace-todo", {
+        treeDataProvider: new TodoListProvider(),
+    });
 
     vscode.window.showInformationMessage(`TimeSpace is now activated!`);
 
@@ -133,9 +145,4 @@ function getCopyString(mode: "utc" | "locale", format: string): string {
                 return dayjs().format(configurationMap.copyFormatUTC);
         }
     }
-}
-
-// This method is called when your extension is deactivated
-export function deactivate() {
-    vscode.window.showInformationMessage(`TimeSpace is now deactivated.`);
 }

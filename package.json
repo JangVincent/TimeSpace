@@ -46,6 +46,59 @@
                     "description": "Locale time string format for copy"
                 }
             }
+        },
+        "viewsContainers": {
+            "activitybar": [
+                {
+                    "id": "timespace-todo-container",
+                    "title": "TimeSpace Todo",
+                    "icon": "icon.png"
+                }
+            ]
+        },
+        "views": {
+            "timespace-todo-container": [
+                {
+                    "id": "timespace-todo",
+                    "name": "TimeSpace Todo"
+                }
+            ]
+        },
+        "commands": [
+            {
+                "command": "timespace.todo.add",
+                "title": "Add Todo",
+                "icon": "$(add)"
+            },
+            {
+                "command": "timespace.todo.remove",
+                "title": "Remove Todo",
+                "icon": "$(remove)"
+            },
+            {
+                "command": "timespace.todo.refresh",
+                "title": "Refresh Todo",
+                "icon": "$(refresh)"
+            }
+        ],
+        "menus": {
+            "view/title": [
+                {
+                    "command": "timespace.todo.add",
+                    "when": "view == timespace-todo",
+                    "group": "navigation@1"
+                },
+                {
+                    "command": "timespace.todo.remove",
+                    "when": "view == timespace-todo",
+                    "group": "navigation@2"
+                },
+                {
+                    "command": "timespace.todo.refresh",
+                    "when": "view == timespace-todo",
+                    "group": "navigation@3"
+                }
+            ]
         }
     },
     "scripts": {
