@@ -196,8 +196,8 @@ You can turn on/off in `settings.json`
 
 ## Known Issues
 
-[0.1.0] : Parameter description typo issue - Fixed 0.1.1 version.
-[0.1.2] : Locale time copy format not applied
+[0.1.0] : Parameter description typo issue - Fixed 0.1.1 version.  
+[0.1.2] : Locale time copy format not applied  
 [0.2.0] : Todo Items not saved. - Fixed 0.2.1 version.
 
 ## For more information
