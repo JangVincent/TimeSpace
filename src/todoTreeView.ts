@@ -57,6 +57,13 @@ export class TodoListProvider implements vscode.TreeDataProvider<TodoItem> {
             async () => await this.remove()
         );
 
+        vscode.commands.registerCommand(
+            "timespace.todo.item_context_remove",
+            (item) => {
+                this.itemClickRemoveHandler(item);
+            }
+        );
+
         switch (process.platform) {
             case "win32": {
                 break;
@@ -146,32 +153,34 @@ export class TodoListProvider implements vscode.TreeDataProvider<TodoItem> {
         this.refresh();
     }
 
-    async remove() {
+    async remove(label: string | null = null) {
         if (Object.keys(this.todos).length === 0) {
             vscode.window.showInformationMessage("No Todo to remove");
             return;
         }
 
-        const label = await vscode.window.showInputBox({
-            placeHolder: "Todo item title",
-            validateInput(value) {
-                if (!value || value.length === 0) {
-                    return "Please enter a label";
-                }
+        const targetLabel = label
+            ? label
+            : await vscode.window.showInputBox({
+                  placeHolder: "Todo item title",
+                  validateInput(value) {
+                      if (!value || value.length === 0) {
+                          return "Please enter a label";
+                      }
 
-                return null;
-            },
-        });
+                      return null;
+                  },
+              });
 
-        if (label) {
-            if (!this.todos[label]) {
+        if (targetLabel) {
+            if (!this.todos[targetLabel]) {
                 vscode.window.showInformationMessage(
-                    `No Todo with title : ${label}`
+                    `No Todo with title : ${targetLabel}`
                 );
                 return;
             }
 
-            delete this.todos[label];
+            delete this.todos[targetLabel];
 
             fs.writeFile(this.filePath, JSON.stringify(this.todos), (err) => {
                 if (err) {
@@ -180,8 +189,14 @@ export class TodoListProvider implements vscode.TreeDataProvider<TodoItem> {
             });
 
             this.refresh();
-            vscode.window.showInformationMessage(`Removed Todo : ${label}`);
+            vscode.window.showInformationMessage(
+                `Removed Todo : ${targetLabel}`
+            );
         }
+    }
+
+    async itemClickRemoveHandler(item: TodoItem) {
+        await this.remove(item.label);
     }
 
     getTodos() {

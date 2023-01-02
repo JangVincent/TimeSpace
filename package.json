@@ -1,11 +1,11 @@
 {
     "name": "timespace",
     "displayName": "TimeSpace",
-    "version": "0.2.2",
+    "version": "0.2.3",
     "publisher": "Phantola",
     "description": "Simple UTC/Locale time extension with customized format",
     "license": "MIT",
-    "icon": "icon.png",
+    "icon": "timespace_icon.png",
     "repository": {
         "type": "git",
         "url": "https://github.com/Phantola/TimeSpace.git"
@@ -82,6 +82,10 @@
                 "icon": "$(add)"
             },
             {
+                "command": "timespace.todo.item_context_remove",
+                "title": "Remove"
+            },
+            {
                 "command": "timespace.todo.remove",
                 "title": "Remove Todo",
                 "icon": "$(remove)"
@@ -108,6 +112,13 @@
                     "command": "timespace.todo.refresh",
                     "when": "view == timespace-todo",
                     "group": "navigation@3"
+                }
+            ],
+            "view/item/context": [
+                {
+                    "command": "timespace.todo.item_context_remove",
+                    "when": "view == timespace-todo",
+                    "group": "navigation@2"
                 }
             ]
         }

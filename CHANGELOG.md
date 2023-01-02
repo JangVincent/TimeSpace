@@ -35,3 +35,7 @@ All notable changes to the `TimeSpace` extension will be documented in this file
 ### [0.2.2]
 
 -   Code Refactoring
+
+### [0.2.3]
+
+-   Remove Todo via right click menu

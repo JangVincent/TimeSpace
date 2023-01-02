@@ -66,7 +66,7 @@ Fix parameter description Typo issue in setting panel in VS code
 
 Extension description fixed.
 
-### 0.2.0 Released!!!
+### 0.2.0 Released!!! (Latest v0.2.3)
 
 Todo list is available.
 
@@ -167,7 +167,9 @@ Also, Once alarmed todo item never alarm again.
 
 ### Delete Todo
 
-Click `-` button, and just input todo item title which you wanna delete, and Press Enter.
+Click `-` button, and just input todo item title which you wanna delete, and Press Enter.  
+`OR`  
+`Right Click` todo item which you wanna remove, Click `Remove` button.
 
 ### Alarm Feature
 
