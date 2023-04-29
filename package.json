@@ -1,150 +1,159 @@
 {
-    "name": "timespace",
-    "displayName": "TimeSpace",
-    "version": "0.2.3",
-    "publisher": "Phantola",
-    "description": "Simple UTC/Locale time extension with customized format",
-    "license": "MIT",
-    "icon": "timespace_icon.png",
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/Phantola/TimeSpace.git"
-    },
-    "engines": {
-        "vscode": "^1.73.0"
-    },
-    "categories": [
-        "Other"
-    ],
-    "activationEvents": [
-        "*"
-    ],
-    "main": "./out/extension.js",
-    "contributes": {
-        "configuration": {
-            "title": "TimeSpace",
-            "type": "object",
-            "properties": {
-                "timeSpace.enableWelcomeMessage": {
-                    "type": "boolean",
-                    "default": true,
-                    "description": "Enable welcome message"
-                },
-                "timeSpace.formatUTC": {
-                    "type": "string",
-                    "default": "YYYY-MM-DD HH:mm:ss",
-                    "description": "UTC time string format"
-                },
-                "timeSpace.formatLocale": {
-                    "type": "string",
-                    "default": "YYYY-MM-DD HH:mm:ss",
-                    "description": "Locale time string format"
-                },
-                "timeSpace.copyFormatUTC": {
-                    "type": "string",
-                    "default": "YYYY-MM-DD HH:mm:ss",
-                    "description": "UTC time string format for copy"
-                },
-                "timeSpace.copyFormatLocale": {
-                    "type": "string",
-                    "default": "YYYY-MM-DD HH:mm:ss",
-                    "description": "Locale time string format for copy"
-                },
-                "timeSpace.alarmDateInputFormat": {
-                    "type": "string",
-                    "default": "YYYY-MM-DD HH:mm:ss",
-                    "description": "Alarm date input format"
-                },
-                "timeSpace.alarmDateDisplayFormat": {
-                    "type": "string",
-                    "default": "YYYY-MM-DD HH:mm:ss",
-                    "description": "Alarm date display format"
-                },
-                "timeSpace.enableAlarm": {
-                    "type": "boolean",
-                    "default": true,
-                    "description": "Enable alarm"
-                }
-            }
+  "name": "timespace",
+  "displayName": "TimeSpace",
+  "version": "0.2.4",
+  "publisher": "Phantola",
+  "description": "Simple UTC/Locale time extension with customized format",
+  "license": "MIT",
+  "icon": "timespace_icon.png",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Phantola/TimeSpace.git"
+  },
+  "engines": {
+    "vscode": "^1.73.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "*"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "configuration": {
+      "title": "TimeSpace",
+      "type": "object",
+      "properties": {
+        "timeSpace.enableWelcomeMessage": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable welcome message"
         },
-        "views": {
-            "explorer": [
-                {
-                    "id": "timespace-todo",
-                    "name": "TimeSpace Todo"
-                }
-            ]
+        "timeSpace.formatUTC": {
+          "type": "string",
+          "default": "YYYY-MM-DD HH:mm:ss",
+          "description": "UTC time string format"
         },
-        "commands": [
-            {
-                "command": "timespace.todo.add",
-                "title": "Add Todo",
-                "icon": "$(add)"
-            },
-            {
-                "command": "timespace.todo.item_context_remove",
-                "title": "Remove"
-            },
-            {
-                "command": "timespace.todo.remove",
-                "title": "Remove Todo",
-                "icon": "$(remove)"
-            },
-            {
-                "command": "timespace.todo.refresh",
-                "title": "Refresh Todo",
-                "icon": "$(refresh)"
-            }
-        ],
-        "menus": {
-            "view/title": [
-                {
-                    "command": "timespace.todo.add",
-                    "when": "view == timespace-todo",
-                    "group": "navigation@1"
-                },
-                {
-                    "command": "timespace.todo.remove",
-                    "when": "view == timespace-todo",
-                    "group": "navigation@2"
-                },
-                {
-                    "command": "timespace.todo.refresh",
-                    "when": "view == timespace-todo",
-                    "group": "navigation@3"
-                }
-            ],
-            "view/item/context": [
-                {
-                    "command": "timespace.todo.item_context_remove",
-                    "when": "view == timespace-todo",
-                    "group": "navigation@2"
-                }
-            ]
+        "timeSpace.formatLocale": {
+          "type": "string",
+          "default": "YYYY-MM-DD HH:mm:ss",
+          "description": "Locale time string format"
+        },
+        "timeSpace.copyFormatUTC": {
+          "type": "string",
+          "default": "YYYY-MM-DD HH:mm:ss",
+          "description": "UTC time string format for copy"
+        },
+        "timeSpace.copyFormatLocale": {
+          "type": "string",
+          "default": "YYYY-MM-DD HH:mm:ss",
+          "description": "Locale time string format for copy"
+        },
+        "timeSpace.alarmDateInputFormat": {
+          "type": "string",
+          "default": "YYYY-MM-DD HH:mm:ss",
+          "description": "Alarm date input format"
+        },
+        "timeSpace.alarmDateDisplayFormat": {
+          "type": "string",
+          "default": "YYYY-MM-DD HH:mm:ss",
+          "description": "Alarm date display format"
+        },
+        "timeSpace.enableAlarm": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable alarm"
         }
+      }
     },
-    "scripts": {
-        "vscode:prepublish": "yarn run compile",
-        "compile": "tsc -p ./",
-        "watch": "tsc -watch -p ./",
-        "pretest": "yarn run compile && yarn run lint",
-        "lint": "eslint src --ext ts",
-        "test": "node ./out/test/runTest.js"
+    "views": {
+      "explorer": [
+        {
+          "id": "timespace-todo",
+          "name": "TimeSpace Todo"
+        }
+      ]
     },
-    "devDependencies": {
-        "@types/glob": "^8.0.0",
-        "@types/mocha": "^10.0.1",
-        "@types/node": "16.x",
-        "@types/vscode": "^1.73.0",
-        "@typescript-eslint/eslint-plugin": "^5.45.0",
-        "@typescript-eslint/parser": "^5.45.0",
-        "@vscode/test-electron": "^2.2.0",
-        "eslint": "^8.28.0",
-        "glob": "^8.0.3",
-        "mocha": "^10.1.0",
-        "typescript": "^4.9.3"
-    },
-    "dependencies": {
-        "dayjs": "^1.11.6"
+    "commands": [
+      {
+        "command": "timespace.todo.add",
+        "title": "Add Todo",
+        "icon": "$(add)"
+      },
+      {
+        "command": "timespace.todo.item_context_remove",
+        "title": "Remove"
+      },
+      {
+        "command": "timespace.todo.item_context_edit",
+        "title": "Edit"
+      },
+      {
+        "command": "timespace.todo.remove",
+        "title": "Remove Todo",
+        "icon": "$(remove)"
+      },
+      {
+        "command": "timespace.todo.refresh",
+        "title": "Refresh Todo",
+        "icon": "$(refresh)"
+      }
+    ],
+    "menus": {
+      "view/title": [
+        {
+          "command": "timespace.todo.add",
+          "when": "view == timespace-todo",
+          "group": "navigation@1"
+        },
+        {
+          "command": "timespace.todo.remove",
+          "when": "view == timespace-todo",
+          "group": "navigation@2"
+        },
+        {
+          "command": "timespace.todo.refresh",
+          "when": "view == timespace-todo",
+          "group": "navigation@3"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "timespace.todo.item_context_remove",
+          "when": "view == timespace-todo",
+          "group": "navigation@2"
+        },
+        {
+          "command": "timespace.todo.item_context_edit",
+          "when": "view == timespace-todo",
+          "group": "navigation@2"
+        }
+      ]
     }
+  },
+  "scripts": {
+    "vscode:prepublish": "yarn run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "yarn run compile && yarn run lint",
+    "lint": "eslint src --ext ts",
+    "test": "node ./out/test/runTest.js"
+  },
+  "devDependencies": {
+    "@types/glob": "^8.0.0",
+    "@types/mocha": "^10.0.1",
+    "@types/node": "16.x",
+    "@types/vscode": "^1.73.0",
+    "@typescript-eslint/eslint-plugin": "^5.45.0",
+    "@typescript-eslint/parser": "^5.45.0",
+    "@vscode/test-electron": "^2.2.0",
+    "eslint": "^8.28.0",
+    "glob": "^8.0.3",
+    "mocha": "^10.1.0",
+    "typescript": "^4.9.3"
+  },
+  "dependencies": {
+    "dayjs": "^1.11.6"
+  }
 }
