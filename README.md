@@ -204,4 +204,4 @@ You can turn on/off in `settings.json`
 
 ## For more information
 
-Developer : [Phantola](https://github.com/phantola)
+Developer : [Vincent Jang](https://github.com/VincentJang)
